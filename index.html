@@ -86,6 +86,35 @@
       <p>© 2024 AI Directory. All rights reserved.</p>
     </footer>
 
+    <!-- Emergency fallback data -->
+    <script>
+      // Minimal fallback data for emergency rendering
+      window.EMERGENCY_DATA = {
+        categories: [
+          {
+            id: "chatbots",
+            label: "Chatbots",
+            title: "Chatbots & Language Models",
+            items: [
+              { href: "https://chat.openai.com", title: "ChatGPT", desc: "OpenAI's powerful language model" },
+              { href: "https://claude.ai", title: "Claude", desc: "Anthropic's AI assistant" },
+              { href: "https://gemini.google.com", title: "Google Gemini", desc: "Google's multimodal AI assistant" }
+            ]
+          },
+          {
+            id: "tools",
+            label: "Tools",
+            title: "AI Tools & Platforms",
+            items: [
+              { href: "https://huggingface.co", title: "Hugging Face", desc: "AI models and datasets" },
+              { href: "https://platform.openai.com", title: "OpenAI Platform", desc: "APIs and developer tools" },
+              { href: "https://pytorch.org", title: "PyTorch", desc: "Facebook's ML framework" }
+            ]
+          }
+        ]
+      };
+    </script>
+
     <!-- Cookie consent banner -->
     <div id="cookieBanner" class="cookie-banner" role="dialog" aria-live="polite" aria-label="Cookie Consent" aria-modal="false" hidden>
       <div class="cookie-content">
@@ -99,9 +128,41 @@
       </div>
     </div>
 
-    <script src="sites.js"></script>
-    <script src="i18n.js"></script>
-    <script src="script.js"></script>
+    <!-- Script loading with error tracking -->
+    <script>
+      // Track script loading status
+      window.scriptLoadStatus = {
+        sites: false,
+        i18n: false,
+        script: false
+      };
+
+      function loadScript(src, name, callback) {
+        var script = document.createElement('script');
+        script.src = src;
+        script.onload = function() {
+          console.log('✅ ' + name + ' loaded successfully');
+          if (callback) callback();
+        };
+        script.onerror = function() {
+          console.error('❌ Failed to load ' + name + ' from ' + src);
+          showDebugInfo('Failed to load ' + name);
+        };
+        document.head.appendChild(script);
+      }
+
+      // Load scripts in sequence
+      loadScript('sites.js', 'sites.js', function() {
+        window.scriptLoadStatus.sites = true;
+        loadScript('i18n.js', 'i18n.js', function() {
+          window.scriptLoadStatus.i18n = true;
+          loadScript('script.js', 'script.js', function() {
+            window.scriptLoadStatus.script = true;
+            console.log('🎉 All scripts loaded');
+          });
+        });
+      });
+    </script>
     <script>
       // Enhanced debug information
       console.log('=== AI Directory Debug Info ===');
@@ -172,40 +233,53 @@
       // Fallback render if main scripts fail
       function fallbackRender() {
         try {
-          if (window.SITES_DATA && window.SITES_DATA.categories) {
+          var data = window.SITES_DATA || window.EMERGENCY_DATA;
+          if (data && data.categories) {
             var container = document.getElementById('categories');
             if (container) {
-              container.innerHTML = '<h2 style="color: red;">JavaScript Error - Fallback Mode</h2>';
-              window.SITES_DATA.categories.forEach(function(cat) {
+              container.innerHTML = '<h2 style="color: orange;">⚠️ Fallback Mode - Limited Features</h2>';
+              data.categories.forEach(function(cat) {
                 var catDiv = document.createElement('div');
+                catDiv.style.marginBottom = '20px';
                 catDiv.innerHTML = '<h3>' + (cat.title || cat.label) + '</h3>';
                 if (cat.items) {
                   cat.items.forEach(function(item) {
                     var itemDiv = document.createElement('div');
-                    itemDiv.innerHTML = '<a href="' + item.href + '" target="_blank">' + item.title + '</a> - ' + item.desc;
+                    itemDiv.style.marginBottom = '10px';
+                    itemDiv.innerHTML = '<a href="' + item.href + '" target="_blank" style="color: #0066cc; text-decoration: none; font-weight: bold;">' + item.title + '</a><br><small style="color: #666;">' + item.desc + '</small>';
                     catDiv.appendChild(itemDiv);
                   });
                 }
                 container.appendChild(catDiv);
               });
-              showDebugInfo('✅ Fallback render successful');
+              showDebugInfo('✅ Fallback render successful with ' + data.categories.length + ' categories');
             }
           } else {
-            showDebugInfo('❌ SITES_DATA not available');
+            showDebugInfo('❌ No data available (SITES_DATA or EMERGENCY_DATA)');
           }
         } catch (error) {
           showDebugInfo('❌ Fallback render failed: ' + error.message);
         }
       }
 
-      // Try to run fallback after 3 seconds if main scripts haven't worked
+      // Try to run fallback after 2 seconds if main scripts haven't worked
       setTimeout(function() {
         var container = document.getElementById('categories');
+        var debugInfo = document.getElementById('debug-info');
+
+        console.log('Checking if fallback render is needed...');
+        console.log('Container found:', !!container);
+        console.log('Container content:', container ? container.innerHTML.trim() : 'no container');
+        console.log('Script load status:', window.scriptLoadStatus);
+
         if (container && container.innerHTML.trim() === '') {
-          console.warn('Main scripts failed, attempting fallback render...');
+          console.warn('⚠️ Main scripts failed, attempting fallback render...');
           fallbackRender();
+          if (debugInfo) {
+            debugInfo.style.display = 'block';
+          }
         }
-      }, 3000);
+      }, 2000);
     </script>
   </body>
 </html>
