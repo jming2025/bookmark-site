@@ -21,7 +21,7 @@ window.SITES_DATA = {
       id: "codegen",
       label: "Code Gen",
       icon: "fas fa-code",
-      title: "代码生成 Code Generation",
+      title: "Code Generation",
       priority: 3,
       items: [
         { href: "https://github.com/features/copilot", title: "GitHub Copilot", desc: "AI pair programmer inside your IDE", icon: "https://github.com/favicon.ico" },
@@ -38,7 +38,7 @@ window.SITES_DATA = {
       id: "labeling",
       label: "Labeling",
       icon: "fas fa-tags",
-      title: "数据标注 Data Labeling",
+      title: "Data Labeling",
       priority: 10,
       items: [
         { href: "https://labelstud.io", title: "Label Studio", desc: "Open-source data labeling for images, text, audio, video", icon: "https://labelstud.io/favicon.ico" },
@@ -55,7 +55,7 @@ window.SITES_DATA = {
       id: "eval-monitoring",
       label: "Eval/Monitoring",
       icon: "fas fa-chart-line",
-      title: "监控评测 Monitoring & Evaluation",
+      title: "Monitoring & Evaluation",
       priority: 7,
       items: [
         { href: "https://smith.langchain.com", title: "LangSmith", desc: "Tracing, evaluation, and dataset management for LLM apps", icon: "https://www.langchain.com/favicon.ico" },
