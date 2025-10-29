@@ -7,7 +7,7 @@ window.SITES_DATA = {
       title: "Chatbots & Language Models",
       priority: 1,
       items: [
-        { href: "https://chat.openai.com", title: "ChatGPT", desc: "OpenAI's powerful language model", icon: "https://chat.openai.com/favicon.ico" },
+        { href: "https://chat.openai.com", title: "ChatGPT", desc: "OpenAI's powerful language model", icon: "https://chat.openai.com/favicon.ico", fallbackIcon: "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTIgMkM2LjQ4IDIgMiA2LjQ4IDIgMTJzNC40OCAxMCAxMCAxMCAxMC00LjQ4IDEwLTEwUzE3LjUyIDIgMTIgMnptMCAxOGMtNC40MSAwLTgtMy41OS04LThzMy41OS04IDgtOCA4IDMuNTkgOCA4LTMuNTkgOC04IDh6IiBmaWxsPSIjODY4NjhiIi8+PC9zdmc+" },
         { href: "https://claude.ai", title: "Claude", desc: "Anthropic's AI assistant", icon: "https://claude.ai/favicon.ico" },
         { href: "https://bard.google.com", title: "Google Bard", desc: "Google's AI chatbot", icon: "https://bard.google.com/favicon.ico" },
         { href: "https://www.perplexity.ai", title: "Perplexity", desc: "AI answer engine with up-to-date web results", icon: "https://www.perplexity.ai/favicon.ico" },

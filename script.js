@@ -15,7 +15,9 @@ var langDropdownEl = document.getElementById("langDropdown");
 // Language handling (default to English, remember selection)
 var currentLang = (function(){
   var v = 'en';
-  try { v = (localStorage.getItem('lang') || 'en').toLowerCase(); } catch(e) {}
+  try { v = (localStorage.getItem('lang') || 'en').toLowerCase(); } catch(e) {
+    console.warn('localStorage not available, defaulting to English');
+  }
   return v;
 })();
 
@@ -121,7 +123,10 @@ function getCatTitle(cat) {
 }
 
 function renderFromData(data) {
-  if (!data || !data.categories || !categoriesContainer) return;
+  if (!data || !data.categories || !categoriesContainer) {
+    console.error('Missing required data or elements for rendering');
+    return;
+  }
 
   // Sort categories by priority (lower first); fallback to 999
   var cats = data.categories.slice().sort(function(a, b){
@@ -216,6 +221,10 @@ function renderFromData(data) {
         { href: item.href, class: "site-card" },
         [img, h3, p]
       );
+      // Store fallback icon if available
+      if (item.fallbackIcon) {
+        card._fallbackIcon = item.fallbackIcon;
+      }
       grid.appendChild(card);
     });
 
@@ -368,8 +377,13 @@ function bindHoverEffects() {
 function bindImageFallback() {
   Array.prototype.forEach.call(document.querySelectorAll(".site-card img"), function(img){
     img.addEventListener("error", function () {
-      this.src =
-        "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTIgMkM2LjQ4IDIgMiA2LjQ4IDIgMTJzNC40OCAxMCAxMCAxMCAxMC00LjQ4IDEwLTEwUzE3LjUyIDIgMTIgMnptMCAxOGMtNC40MSAwLTgtMy41OS04LThzMy41OS04IDgtOCA4IDMuNTkgOCA4LTMuNTkgOC04IDh6IiBmaWxsPSIjODY4NjhiIi8+PC9zdmc+";
+      // Try to use fallback icon if available
+      var card = this.closest('.site-card');
+      if (card && card._fallbackIcon) {
+        this.src = card._fallbackIcon;
+      } else {
+        this.src = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTIgMkM2LjQ4IDIgMiA2LjQ4IDIgMTJzNC40OCAxMCAxMCAxMCAxMC00LjQ4IDEwLTEwUzE3LjUyIDIgMTIgMnptMCAxOGMtNC40MSAwLTgtMy41OS04LThzMy41OS04IDgtOCA4IDMuNTkgOCA4LTMuNTkgOC04IDh6IiBmaWxsPSIjODY4NjhiIi8+PC9zdmc+";
+      }
     });
   });
 }

@@ -102,5 +102,17 @@
     <script src="sites.js"></script>
     <script src="i18n.js"></script>
     <script src="script.js"></script>
+    <script>
+      // Debug information
+      console.log('Page loaded, checking for required data...');
+      console.log('SITES_DATA available:', typeof window.SITES_DATA !== 'undefined');
+      console.log('I18N available:', typeof window.I18N !== 'undefined');
+      if (typeof window.SITES_DATA === 'undefined') {
+        console.error('SITES_DATA is not loaded! Check sites.js file.');
+      }
+      if (typeof window.I18N === 'undefined') {
+        console.error('I18N is not loaded! Check i18n.js file.');
+      }
+    </script>
   </body>
 </html>
