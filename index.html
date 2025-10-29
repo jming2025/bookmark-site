@@ -65,11 +65,6 @@
           <button type="submit" aria-label="Search"><i class="fas fa-search"></i></button>
         </form>
         <div id="searchSuggestions" class="search-suggestions" aria-live="polite" aria-atomic="true"></div>
-        <button id="langPill" class="lang-pill" aria-label="Language: English" aria-haspopup="true" aria-expanded="false">
-          <i class="fas fa-globe" aria-hidden="true"></i>
-          <span>EN</span>
-        </button>
-        <div id="langDropdown" class="lang-dropdown" role="menu" aria-label="Language menu" hidden></div>
       </nav>
     </header>
 
@@ -86,34 +81,6 @@
       <p>漏 2024 AI Directory. All rights reserved.</p>
     </footer>
 
-    <!-- Emergency fallback data -->
-    <script>
-      // Minimal fallback data for emergency rendering
-      window.EMERGENCY_DATA = {
-        categories: [
-          {
-            id: "chatbots",
-            label: "Chatbots",
-            title: "Chatbots & Language Models",
-            items: [
-              { href: "https://chat.openai.com", title: "ChatGPT", desc: "OpenAI's powerful language model" },
-              { href: "https://claude.ai", title: "Claude", desc: "Anthropic's AI assistant" },
-              { href: "https://gemini.google.com", title: "Google Gemini", desc: "Google's multimodal AI assistant" }
-            ]
-          },
-          {
-            id: "tools",
-            label: "Tools",
-            title: "AI Tools & Platforms",
-            items: [
-              { href: "https://huggingface.co", title: "Hugging Face", desc: "AI models and datasets" },
-              { href: "https://platform.openai.com", title: "OpenAI Platform", desc: "APIs and developer tools" },
-              { href: "https://pytorch.org", title: "PyTorch", desc: "Facebook's ML framework" }
-            ]
-          }
-        ]
-      };
-    </script>
 
     <!-- Cookie consent banner -->
     <div id="cookieBanner" class="cookie-banner" role="dialog" aria-live="polite" aria-label="Cookie Consent" aria-modal="false" hidden>
@@ -130,133 +97,7 @@
 
     <!-- Script loading: use static tags for CDN/Cloudflare compatibility -->
   <script src="sites.js?v=20251029T1119"></script>
-  <script src="i18n.js?v=20251029T1119"></script>
   <script src="script.js?v=20251029T1119"></script>
-    <script>
-      // Enhanced debug information
-      console.log('=== AI Directory Debug Info ===');
-      console.log('Page loaded at:', new Date().toISOString());
-      console.log('Current URL:', window.location.href);
-      console.log('Current protocol:', window.location.protocol);
-
-      // Check each script file individually
-      console.log('sites.js loaded:', typeof window.SITES_DATA !== 'undefined');
-      console.log('i18n.js loaded:', typeof window.I18N !== 'undefined');
-      console.log('script.js loaded:', typeof renderFromData === 'function');
-
-      // Check for specific data structures
-      if (typeof window.SITES_DATA === 'undefined') {
-        console.error('鉂?SITES_DATA is not loaded! Check sites.js file.');
-      } else {
-        console.log('鉁?SITES_DATA loaded:', window.SITES_DATA);
-        console.log('Categories count:', window.SITES_DATA.categories ? window.SITES_DATA.categories.length : 0);
-      }
-
-      if (typeof window.I18N === 'undefined') {
-        console.error('鉂?I18N is not loaded! Check i18n.js file.');
-      } else {
-        console.log('鉁?I18N loaded, languages:', Object.keys(window.I18N));
-      }
-
-      if (typeof renderFromData !== 'function') {
-        console.error('鉂?renderFromData function not found! Check script.js file.');
-      } else {
-        console.log('鉁?renderFromData function loaded');
-      }
-
-      // Check DOM elements
-      console.log('DOM elements check:');
-      console.log('- categoriesContainer:', document.getElementById('categories') ? 'found' : 'missing');
-      console.log('- searchInput:', document.getElementById('searchInput') ? 'found' : 'missing');
-
-      // Try to manually trigger rendering if needed
-      if (window.SITES_DATA && window.I18N && renderFromData) {
-        console.log('馃攧 Attempting manual render...');
-        try {
-          renderFromData(window.SITES_DATA);
-          console.log('鉁?Manual render successful');
-        } catch (error) {
-          console.error('鉂?Manual render failed:', error);
-        }
-      }
-
-      console.log('=== Debug Info End ===');
-    </script>
-  <!-- Fallback content for debugging -->
-    <div id="debug-info" style="display: none; position: fixed; bottom: 10px; right: 10px; background: #f0f0f0; padding: 10px; border: 1px solid #ccc; font-family: monospace; font-size: 12px; max-width: 300px;">
-      <strong>Debug Info:</strong><br>
-      <span id="debug-status">Loading...</span>
-    </div>
-
-    <script>
-      // Show debug info if JS fails
-      function showDebugInfo(message) {
-        var debugDiv = document.getElementById('debug-info');
-        var debugSpan = document.getElementById('debug-status');
-        if (debugDiv && debugSpan) {
-          debugDiv.style.display = 'block';
-          debugSpan.innerHTML = message;
-        }
-      }
-
-      // Fallback render if main scripts fail
-      function fallbackRender() {
-        try {
-          var data = window.SITES_DATA || window.EMERGENCY_DATA;
-          if (data && data.categories) {
-            var container = document.getElementById('categories');
-            if (container) {
-              container.innerHTML = '<h2 style="color: orange;">鈿狅笍 Fallback Mode - Limited Features</h2>';
-              data.categories.forEach(function(cat) {
-                var catDiv = document.createElement('div');
-                catDiv.style.marginBottom = '20px';
-                catDiv.innerHTML = '<h3>' + (cat.title || cat.label) + '</h3>';
-                if (cat.items) {
-                  cat.items.forEach(function(item) {
-                    var itemDiv = document.createElement('div');
-                    itemDiv.style.marginBottom = '10px';
-                    itemDiv.innerHTML = '<a href="' + item.href + '" target="_blank" style="color: #0066cc; text-decoration: none; font-weight: bold;">' + item.title + '</a><br><small style="color: #666;">' + item.desc + '</small>';
-                    catDiv.appendChild(itemDiv);
-                  });
-                }
-                container.appendChild(catDiv);
-              });
-              showDebugInfo('鉁?Fallback render successful with ' + data.categories.length + ' categories');
-            }
-          } else {
-            showDebugInfo('鉂?No data available (SITES_DATA or EMERGENCY_DATA)');
-          }
-        } catch (error) {
-          showDebugInfo('鉂?Fallback render failed: ' + error.message);
-        }
-      }
-
-      // Try to run fallback after 2 seconds if main scripts haven't worked
-      setTimeout(function() {
-        var container = document.getElementById('categories');
-        var debugInfo = document.getElementById('debug-info');
-
-        console.log('Checking if fallback render is needed...');
-        console.log('Container found:', !!container);
-        console.log('Container content:', container ? container.innerHTML.trim() : 'no container');
-        console.log('Script load status:', window.scriptLoadStatus);
-
-        if (container && container.innerHTML.trim() === '') {
-          console.warn('⚠️ Main scripts not rendered yet. Forcing re-render...');
-          try {
-            if (typeof rerenderAll === 'function') { rerenderAll(); }
-            else if (typeof renderFromData === 'function' && window.SITES_DATA) { renderFromData(window.SITES_DATA); }
-          } catch (e) { console.error('Force render error:', e); }
-          setTimeout(function(){
-            if (container.innerHTML.trim() === '') {
-              console.warn('⚠️ Main scripts failed, attempting fallback render...');
-              fallbackRender();
-              if (debugInfo) { debugInfo.style.display = 'block'; }
-            }
-          }, 300);
-        }
-      }, 2000);
-    </script>
   </body>
 </html>
 
