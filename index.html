@@ -128,44 +128,10 @@
       </div>
     </div>
 
-    <!-- Script loading with error tracking -->
-    <script>
-      // Track script loading status
-      window.scriptLoadStatus = {
-        sites: false,
-        i18n: false,
-        script: false
-      };
-
-      function loadScript(src, name, callback) {
-        var script = document.createElement('script');
-        script.src = src;
-        // Prevent Cloudflare Rocket Loader from altering execution order
-        script.setAttribute('data-cfasync', 'false');
-        script.async = false;
-        script.onload = function() {
-          console.log('鉁?' + name + ' loaded successfully');
-          if (callback) callback();
-        };
-        script.onerror = function() {
-          console.error('鉂?Failed to load ' + name + ' from ' + src);
-          showDebugInfo('Failed to load ' + name);
-        };
-        document.head.appendChild(script);
-      }
-
-      // Load scripts in sequence
-      loadScript('sites.js', 'sites.js', function() {
-        window.scriptLoadStatus.sites = true;
-        loadScript('i18n.js', 'i18n.js', function() {
-          window.scriptLoadStatus.i18n = true;
-          loadScript('script.js', 'script.js', function() {
-            window.scriptLoadStatus.script = true;
-            console.log('馃帀 All scripts loaded');
-          });
-        });
-      });
-    </script>
+    <!-- Script loading: use static tags for CDN/Cloudflare compatibility -->
+    <script src="sites.js"></script>
+    <script src="i18n.js"></script>
+    <script src="script.js"></script>
     <script>
       // Enhanced debug information
       console.log('=== AI Directory Debug Info ===');
