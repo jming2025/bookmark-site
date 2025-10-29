@@ -103,16 +103,109 @@
     <script src="i18n.js"></script>
     <script src="script.js"></script>
     <script>
-      // Debug information
-      console.log('Page loaded, checking for required data...');
-      console.log('SITES_DATA available:', typeof window.SITES_DATA !== 'undefined');
-      console.log('I18N available:', typeof window.I18N !== 'undefined');
+      // Enhanced debug information
+      console.log('=== AI Directory Debug Info ===');
+      console.log('Page loaded at:', new Date().toISOString());
+      console.log('Current URL:', window.location.href);
+      console.log('Current protocol:', window.location.protocol);
+
+      // Check each script file individually
+      console.log('sites.js loaded:', typeof window.SITES_DATA !== 'undefined');
+      console.log('i18n.js loaded:', typeof window.I18N !== 'undefined');
+      console.log('script.js loaded:', typeof renderFromData === 'function');
+
+      // Check for specific data structures
       if (typeof window.SITES_DATA === 'undefined') {
-        console.error('SITES_DATA is not loaded! Check sites.js file.');
+        console.error('❌ SITES_DATA is not loaded! Check sites.js file.');
+      } else {
+        console.log('✅ SITES_DATA loaded:', window.SITES_DATA);
+        console.log('Categories count:', window.SITES_DATA.categories ? window.SITES_DATA.categories.length : 0);
       }
+
       if (typeof window.I18N === 'undefined') {
-        console.error('I18N is not loaded! Check i18n.js file.');
+        console.error('❌ I18N is not loaded! Check i18n.js file.');
+      } else {
+        console.log('✅ I18N loaded, languages:', Object.keys(window.I18N));
       }
+
+      if (typeof renderFromData !== 'function') {
+        console.error('❌ renderFromData function not found! Check script.js file.');
+      } else {
+        console.log('✅ renderFromData function loaded');
+      }
+
+      // Check DOM elements
+      console.log('DOM elements check:');
+      console.log('- categoriesContainer:', document.getElementById('categories') ? 'found' : 'missing');
+      console.log('- searchInput:', document.getElementById('searchInput') ? 'found' : 'missing');
+
+      // Try to manually trigger rendering if needed
+      if (window.SITES_DATA && window.I18N && renderFromData) {
+        console.log('🔄 Attempting manual render...');
+        try {
+          renderFromData(window.SITES_DATA);
+          console.log('✅ Manual render successful');
+        } catch (error) {
+          console.error('❌ Manual render failed:', error);
+        }
+      }
+
+      console.log('=== Debug Info End ===');
+    </script>
+  <!-- Fallback content for debugging -->
+    <div id="debug-info" style="display: none; position: fixed; bottom: 10px; right: 10px; background: #f0f0f0; padding: 10px; border: 1px solid #ccc; font-family: monospace; font-size: 12px; max-width: 300px;">
+      <strong>Debug Info:</strong><br>
+      <span id="debug-status">Loading...</span>
+    </div>
+
+    <script>
+      // Show debug info if JS fails
+      function showDebugInfo(message) {
+        var debugDiv = document.getElementById('debug-info');
+        var debugSpan = document.getElementById('debug-status');
+        if (debugDiv && debugSpan) {
+          debugDiv.style.display = 'block';
+          debugSpan.innerHTML = message;
+        }
+      }
+
+      // Fallback render if main scripts fail
+      function fallbackRender() {
+        try {
+          if (window.SITES_DATA && window.SITES_DATA.categories) {
+            var container = document.getElementById('categories');
+            if (container) {
+              container.innerHTML = '<h2 style="color: red;">JavaScript Error - Fallback Mode</h2>';
+              window.SITES_DATA.categories.forEach(function(cat) {
+                var catDiv = document.createElement('div');
+                catDiv.innerHTML = '<h3>' + (cat.title || cat.label) + '</h3>';
+                if (cat.items) {
+                  cat.items.forEach(function(item) {
+                    var itemDiv = document.createElement('div');
+                    itemDiv.innerHTML = '<a href="' + item.href + '" target="_blank">' + item.title + '</a> - ' + item.desc;
+                    catDiv.appendChild(itemDiv);
+                  });
+                }
+                container.appendChild(catDiv);
+              });
+              showDebugInfo('✅ Fallback render successful');
+            }
+          } else {
+            showDebugInfo('❌ SITES_DATA not available');
+          }
+        } catch (error) {
+          showDebugInfo('❌ Fallback render failed: ' + error.message);
+        }
+      }
+
+      // Try to run fallback after 3 seconds if main scripts haven't worked
+      setTimeout(function() {
+        var container = document.getElementById('categories');
+        if (container && container.innerHTML.trim() === '') {
+          console.warn('Main scripts failed, attempting fallback render...');
+          fallbackRender();
+        }
+      }, 3000);
     </script>
   </body>
 </html>

@@ -577,8 +577,15 @@ if (searchForm)
   });
 
 // Bootstrapping: render from window.SITES_DATA if available
-if (window.SITES_DATA) {
-  renderFromData(window.SITES_DATA);
+try {
+  if (window.SITES_DATA) {
+    console.log('Auto-rendering from SITES_DATA...');
+    renderFromData(window.SITES_DATA);
+  } else {
+    console.warn('SITES_DATA not available for auto-rendering');
+  }
+} catch (error) {
+  console.error('Error during auto-rendering:', error);
 }
 
 // After render, initialize behaviors
