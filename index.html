@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -83,7 +83,7 @@
     </main>
 
     <footer>
-      <p>© 2024 AI Directory. All rights reserved.</p>
+      <p>漏 2024 AI Directory. All rights reserved.</p>
     </footer>
 
     <!-- Emergency fallback data -->
@@ -140,12 +140,15 @@
       function loadScript(src, name, callback) {
         var script = document.createElement('script');
         script.src = src;
+        // Prevent Cloudflare Rocket Loader from altering execution order
+        script.setAttribute('data-cfasync', 'false');
+        script.async = false;
         script.onload = function() {
-          console.log('✅ ' + name + ' loaded successfully');
+          console.log('鉁?' + name + ' loaded successfully');
           if (callback) callback();
         };
         script.onerror = function() {
-          console.error('❌ Failed to load ' + name + ' from ' + src);
+          console.error('鉂?Failed to load ' + name + ' from ' + src);
           showDebugInfo('Failed to load ' + name);
         };
         document.head.appendChild(script);
@@ -158,7 +161,7 @@
           window.scriptLoadStatus.i18n = true;
           loadScript('script.js', 'script.js', function() {
             window.scriptLoadStatus.script = true;
-            console.log('🎉 All scripts loaded');
+            console.log('馃帀 All scripts loaded');
           });
         });
       });
@@ -177,22 +180,22 @@
 
       // Check for specific data structures
       if (typeof window.SITES_DATA === 'undefined') {
-        console.error('❌ SITES_DATA is not loaded! Check sites.js file.');
+        console.error('鉂?SITES_DATA is not loaded! Check sites.js file.');
       } else {
-        console.log('✅ SITES_DATA loaded:', window.SITES_DATA);
+        console.log('鉁?SITES_DATA loaded:', window.SITES_DATA);
         console.log('Categories count:', window.SITES_DATA.categories ? window.SITES_DATA.categories.length : 0);
       }
 
       if (typeof window.I18N === 'undefined') {
-        console.error('❌ I18N is not loaded! Check i18n.js file.');
+        console.error('鉂?I18N is not loaded! Check i18n.js file.');
       } else {
-        console.log('✅ I18N loaded, languages:', Object.keys(window.I18N));
+        console.log('鉁?I18N loaded, languages:', Object.keys(window.I18N));
       }
 
       if (typeof renderFromData !== 'function') {
-        console.error('❌ renderFromData function not found! Check script.js file.');
+        console.error('鉂?renderFromData function not found! Check script.js file.');
       } else {
-        console.log('✅ renderFromData function loaded');
+        console.log('鉁?renderFromData function loaded');
       }
 
       // Check DOM elements
@@ -202,12 +205,12 @@
 
       // Try to manually trigger rendering if needed
       if (window.SITES_DATA && window.I18N && renderFromData) {
-        console.log('🔄 Attempting manual render...');
+        console.log('馃攧 Attempting manual render...');
         try {
           renderFromData(window.SITES_DATA);
-          console.log('✅ Manual render successful');
+          console.log('鉁?Manual render successful');
         } catch (error) {
-          console.error('❌ Manual render failed:', error);
+          console.error('鉂?Manual render failed:', error);
         }
       }
 
@@ -237,7 +240,7 @@
           if (data && data.categories) {
             var container = document.getElementById('categories');
             if (container) {
-              container.innerHTML = '<h2 style="color: orange;">⚠️ Fallback Mode - Limited Features</h2>';
+              container.innerHTML = '<h2 style="color: orange;">鈿狅笍 Fallback Mode - Limited Features</h2>';
               data.categories.forEach(function(cat) {
                 var catDiv = document.createElement('div');
                 catDiv.style.marginBottom = '20px';
@@ -252,13 +255,13 @@
                 }
                 container.appendChild(catDiv);
               });
-              showDebugInfo('✅ Fallback render successful with ' + data.categories.length + ' categories');
+              showDebugInfo('鉁?Fallback render successful with ' + data.categories.length + ' categories');
             }
           } else {
-            showDebugInfo('❌ No data available (SITES_DATA or EMERGENCY_DATA)');
+            showDebugInfo('鉂?No data available (SITES_DATA or EMERGENCY_DATA)');
           }
         } catch (error) {
-          showDebugInfo('❌ Fallback render failed: ' + error.message);
+          showDebugInfo('鉂?Fallback render failed: ' + error.message);
         }
       }
 
@@ -273,13 +276,23 @@
         console.log('Script load status:', window.scriptLoadStatus);
 
         if (container && container.innerHTML.trim() === '') {
-          console.warn('⚠️ Main scripts failed, attempting fallback render...');
-          fallbackRender();
-          if (debugInfo) {
-            debugInfo.style.display = 'block';
-          }
+          console.warn('⚠️ Main scripts not rendered yet. Forcing re-render...');
+          try {
+            if (typeof rerenderAll === 'function') { rerenderAll(); }
+            else if (typeof renderFromData === 'function' && window.SITES_DATA) { renderFromData(window.SITES_DATA); }
+          } catch (e) { console.error('Force render error:', e); }
+          setTimeout(function(){
+            if (container.innerHTML.trim() === '') {
+              console.warn('⚠️ Main scripts failed, attempting fallback render...');
+              fallbackRender();
+              if (debugInfo) { debugInfo.style.display = 'block'; }
+            }
+          }, 300);
         }
       }, 2000);
     </script>
   </body>
 </html>
+
+
+

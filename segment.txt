@@ -1,0 +1,21 @@
+        console.log('Script load status:', window.scriptLoadStatus);
+
+        if (container && container.innerHTML.trim() === '') {
+          console.warn('?? Main scripts not rendered yet. Forcing re-render...');
+          try {
+            if (typeof rerenderAll === 'function') { rerenderAll(); }
+            else if (typeof renderFromData === 'function' && window.SITES_DATA) { renderFromData(window.SITES_DATA); }
+          } catch (e) { console.error('Force render error:', e); }
+          setTimeout(function(){
+            if (container.innerHTML.trim() === '') {
+              console.warn('?? Main scripts failed, attempting fallback render...');
+              fallbackRender();
+              if (debugInfo) { debugInfo.style.display = 'block'; }
+            }
+          }, 300);
+        }
+        }
+      }, 2000);
+    </script>
+  </body>
+</html>
