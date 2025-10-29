@@ -3,34 +3,73 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="AI Directory: Curated collection of AI chatbots, image generation tools, research sites, and platforms. Search and discover top AI resources."
+    />
     <title>AI Directory - Your Gateway to Artificial Intelligence</title>
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="nav.css" />
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      crossorigin="anonymous"
     />
+    <meta property="og:title" content="AI Directory - Your Gateway to Artificial Intelligence" />
+    <meta property="og:description" content="Curated AI resources: chatbots, image generation, research, and tools." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="AI Directory - Your Gateway to Artificial Intelligence" />
+    <meta name="twitter:description" content="Curated AI resources: chatbots, image generation, research, and tools." />
   </head>
-  <!-- Google tag (gtag.js) -->
+  <!-- Google tag (gtag.js) with Consent Mode + IP anonymization -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-L70K7JXND9"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
+  function gtag(){ dataLayer.push(arguments); }
+  // Default: deny analytics until user consents
+  gtag('consent', 'default', {
+    'ad_storage': 'denied',
+    'analytics_storage': 'denied',
+    'functionality_storage': 'granted',
+    'security_storage': 'granted'
+  });
   gtag('js', new Date());
-
-  gtag('config', 'G-L70K7JXND9');
+  gtag('config', 'G-L70K7JXND9', { 'anonymize_ip': true });
 </script>
   <body>
     <header>
       <nav>
         <div class="logo">AI Directory</div>
-        <div class="search-container">
+        <button class="menu-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="primary-nav">
+          <i class="fas fa-bars" aria-hidden="true"></i>
+        </button>
+        <div class="categories-menu" aria-label="Categories">
+          <button class="categories-trigger" id="categories-trigger" aria-haspopup="true" aria-expanded="false">
+            <i class="fas fa-list" aria-hidden="true"></i>
+            <span class="cat-trigger-label">Categories</span>
+            <i class="fas fa-chevron-down" aria-hidden="true"></i>
+          </button>
+          <div class="categories-dropdown" id="categories-dropdown" role="menu" aria-label="Categories"></div>
+        </div>
+        <div class="nav-links" id="primary-nav"></div>
+        <form id="searchForm" class="search-container" role="search">
+          <label for="searchInput" class="sr-only">Search AI websites</label>
           <input
             type="text"
             placeholder="Search AI websites..."
             id="searchInput"
+            aria-label="Search AI websites"
           />
-          <button><i class="fas fa-search"></i></button>
-        </div>
+          <button type="submit" aria-label="Search"><i class="fas fa-search"></i></button>
+        </form>
+        <div id="searchSuggestions" class="search-suggestions" aria-live="polite" aria-atomic="true"></div>
+        <button id="langPill" class="lang-pill" aria-label="Language: English" aria-haspopup="true" aria-expanded="false">
+          <i class="fas fa-globe" aria-hidden="true"></i>
+          <span>EN</span>
+        </button>
+        <div id="langDropdown" class="lang-dropdown" role="menu" aria-label="Language menu" hidden></div>
       </nav>
     </header>
 
@@ -40,115 +79,28 @@
         <p>Your curated collection of artificial intelligence resources</p>
       </section>
 
-      <section class="categories">
-        <div class="category" data-category="chatbots">
-          <h2><i class="fas fa-robot"></i> Chatbots & Language Models</h2>
-          <div class="sites-grid">
-            <a href="https://chat.openai.com" class="site-card">
-              <img src="https://chat.openai.com/favicon.ico" alt="ChatGPT" />
-              <h3>ChatGPT</h3>
-              <p>OpenAI's powerful language model</p>
-            </a>
-            <a href="https://claude.ai" class="site-card">
-              <img src="https://claude.ai/favicon.ico" alt="Claude" />
-              <h3>Claude</h3>
-              <p>Anthropic's AI assistant</p>
-            </a>
-            <a href="https://bard.google.com" class="site-card">
-              <img
-                src="https://bard.google.com/favicon.ico"
-                alt="Google Bard"
-              />
-              <h3>Google Bard</h3>
-              <p>Google's AI chatbot</p>
-            </a>
-          </div>
-        </div>
-
-        <div class="category" data-category="image-generation">
-          <h2><i class="fas fa-image"></i> Image Generation</h2>
-          <div class="sites-grid">
-            <a href="https://midjourney.com" class="site-card">
-              <img src="https://midjourney.com/favicon.ico" alt="Midjourney" />
-              <h3>Midjourney</h3>
-              <p>AI art generation</p>
-            </a>
-            <a href="https://stability.ai" class="site-card">
-              <img
-                src="https://stability.ai/favicon.ico"
-                alt="Stable Diffusion"
-              />
-              <h3>Stable Diffusion</h3>
-              <p>Open-source image generation</p>
-            </a>
-            <a href="https://www.dall-e.com" class="site-card">
-              <img src="https://www.dall-e.com/favicon.ico" alt="DALL-E" />
-              <h3>DALL-E</h3>
-              <p>OpenAI's image generation</p>
-            </a>
-          </div>
-        </div>
-
-        <div class="category" data-category="research">
-          <h2><i class="fas fa-flask"></i> AI Research & News</h2>
-          <div class="sites-grid">
-            <a href="https://arxiv.org" class="site-card">
-              <img src="https://arxiv.org/favicon.ico" alt="arXiv" />
-              <h3>arXiv</h3>
-              <p>AI research papers</p>
-            </a>
-            <a href="https://www.paperswithcode.com" class="site-card">
-              <img
-                src="https://www.paperswithcode.com/favicon.ico"
-                alt="Papers with Code"
-              />
-              <h3>Papers with Code</h3>
-              <p>Research papers with code</p>
-            </a>
-            <a href="https://venturebeat.com/ai" class="site-card">
-              <img
-                src="https://venturebeat.com/favicon.ico"
-                alt="VentureBeat AI"
-              />
-              <h3>VentureBeat AI</h3>
-              <p>AI news and analysis</p>
-            </a>
-          </div>
-        </div>
-
-        <div class="category" data-category="tools">
-          <h2><i class="fas fa-tools"></i> AI Tools & Platforms</h2>
-          <div class="sites-grid">
-            <a href="https://huggingface.co" class="site-card">
-              <img
-                src="https://huggingface.co/favicon.ico"
-                alt="Hugging Face"
-              />
-              <h3>Hugging Face</h3>
-              <p>AI models and datasets</p>
-            </a>
-            <a href="https://www.tensorflow.org" class="site-card">
-              <img
-                src="https://www.tensorflow.org/favicon.ico"
-                alt="TensorFlow"
-              />
-              <h3>TensorFlow</h3>
-              <p>Google's ML framework</p>
-            </a>
-            <a href="https://pytorch.org" class="site-card">
-              <img src="https://pytorch.org/favicon.ico" alt="PyTorch" />
-              <h3>PyTorch</h3>
-              <p>Facebook's ML framework</p>
-            </a>
-          </div>
-        </div>
-      </section>
+      <section class="categories" id="categories"></section>
     </main>
 
     <footer>
       <p>© 2024 AI Directory. All rights reserved.</p>
     </footer>
 
+    <!-- Cookie consent banner -->
+    <div id="cookieBanner" class="cookie-banner" role="dialog" aria-live="polite" aria-label="Cookie Consent" aria-modal="false" hidden>
+      <div class="cookie-content">
+        <div class="cookie-text">
+          We use cookies for essential functionality and anonymous analytics. You can accept or decline analytics cookies.
+        </div>
+        <div class="cookie-actions">
+          <button id="cookieReject" class="btn-secondary" aria-label="Decline analytics">Decline</button>
+          <button id="cookieAccept" class="btn-primary" aria-label="Accept analytics">Accept</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="sites.js"></script>
+    <script src="i18n.js"></script>
     <script src="script.js"></script>
   </body>
 </html>
